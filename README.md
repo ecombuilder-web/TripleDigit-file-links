@@ -12,6 +12,14 @@ A free Claude Code mod by **[Triple Digit](https://triple-digit.com)**, the AI a
 
 </div>
 
+<div align="center">
+
+<img src="docs/file-links-pane.png" alt="The File Links pane: a search field at the top and a list of files, each a button with its folder path underneath" width="380">
+
+<sub>The Files pane. Each file is a button that opens File Explorer with that file selected.</sub>
+
+</div>
+
 ---
 
 ## Built by Triple Digit
