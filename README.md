@@ -51,6 +51,8 @@ The panel stays on your machine and reads only what you connect to it. We build 
 
 File Links adds a **Files** pane beside the chat. Every file the session creates or changes is listed, newest first, with its folder underneath. **Click a file and Windows File Explorer opens with that file selected.**
 
+When the list gets long, type in the **search field** at the top of the pane. It filters as you type, ignores upper and lower case, and matches the file name or its folder path. Clear the field to see everything again.
+
 It picks files up from:
 
 - **Write, Edit and NotebookEdit** tool calls.
@@ -90,8 +92,8 @@ The pane opens by itself in every **new** session. A session started before the 
 
 | Piece | Role |
 | --- | --- |
-| `hooks/register.tsx` | The hooks module: opens the pane, records files from tool calls, scans after Bash commands, draws the list and opens Explorer on click |
-| `hooks/register.test.ts` | Tests for the pane: a written file is listed, an empty pane says so, a denied write is not listed |
+| `hooks/register.tsx` | The hooks module: opens the pane, records files from tool calls, scans after Bash commands, draws the search field and the list, and opens Explorer on click |
+| `hooks/register.test.ts` | Tests for the pane: a written file is listed, an empty pane says so, a denied write is not listed, the search field filters the list |
 | `types/index.d.ts` | State contract |
 
 ### Privacy and safety
@@ -109,7 +111,7 @@ claude plugin validate ~/.claude/mods/file-links
 claude plugin test ~/.claude/mods/file-links
 ```
 
-`validate` checks the manifest, the hooks module and the state contract. `test` runs `hooks/register.test.ts` against the engine and covers the pane, not the Bash scan or the Explorer click.
+`validate` checks the manifest, the hooks module and the state contract. `test` runs `hooks/register.test.ts` against the engine and covers the pane and its search field, not the Bash scan or the Explorer click.
 
 ## License
 

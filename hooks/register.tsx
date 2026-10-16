@@ -3,6 +3,7 @@ import type { Register } from 'claude-code'
 
 const PANE = 'file-links'
 const files = atom({ plugin: 'file-links', key: 'files' } as const, [] as string[])
+const query = atom({ plugin: 'file-links', key: 'query' } as const, '')
 
 const toWindows = (path: string) =>
   path.replace(/^\/([a-zA-Z])\//, '$1:/').replace(/\//g, '\\')
@@ -104,12 +105,31 @@ export const register: Register = on => {
   }).catch(($, e, next) => next(e))
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
-    const { Box, Text, Button } = $.ui.resolve(e)
-    const list = await read($, files)
+    const els = $.ui.resolve(e)
+    const { Box, Text, Button } = els
+    const Input = (els as any).Input as ((props: any) => any) | undefined
+    const all = await read($, files)
+    const q = await read($, query)
+    const needle = q.trim().toLowerCase()
+    const list = needle ? all.filter(path => path.toLowerCase().includes(needle)) : all
 
     return (
       <Box flexDirection="column">
-        {list.length === 0 && <Text dimColor>No files yet this session.</Text>}
+        {Input && (
+          <Input
+            key="search"
+            placeholder="Search files by name"
+            value={q}
+            onInput={(value: string) => {
+              void update($, query, () => value)
+            }}
+            onSubmit={(value: string) => {
+              void update($, query, () => value)
+            }}
+          />
+        )}
+        {all.length === 0 && <Text dimColor>No files yet this session.</Text>}
+        {all.length > 0 && list.length === 0 && <Text dimColor>No file matches "{q}".</Text>}
         {list.map(path => {
           const { name, dir } = split(path)
           return (
