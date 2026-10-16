@@ -1,0 +1,16 @@
+{
+  "name": "tripledigit-file-links",
+  "description": "Claude Code mods by Triple Digit, the AI agency that builds tailored AI solutions for each company (triple-digit.com)",
+  "owner": {
+    "name": "Triple Digit",
+    "email": "hello@triple-digit.com",
+    "url": "https://triple-digit.com"
+  },
+  "plugins": [
+    {
+      "name": "file-links",
+      "source": "./",
+      "description": "Files pane beside the chat: every file Claude creates or edits in a session, including files made by Bash commands like FFmpeg and yt-dlp, each one click from Windows File Explorer."
+    }
+  ]
+}

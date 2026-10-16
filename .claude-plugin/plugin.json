@@ -1,0 +1,22 @@
+{
+  "name": "file-links",
+  "version": "0.2.0",
+  "description": "Files pane by Triple Digit (triple-digit.com, tailored AI solutions for each company): every file Claude creates or edits in a session, one click from Windows File Explorer.",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "Triple Digit",
+    "email": "hello@triple-digit.com",
+    "url": "https://triple-digit.com"
+  },
+  "homepage": "https://triple-digit.com",
+  "repository": "https://github.com/ecombuilder-web/TripleDigit-file-links",
+  "keywords": [
+    "claude-code",
+    "files",
+    "file-explorer",
+    "triple-digit",
+    "custom-panels",
+    "claude-desktop"
+  ],
+  "license": "MIT"
+}
