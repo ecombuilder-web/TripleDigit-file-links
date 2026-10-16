@@ -91,6 +91,7 @@ The pane opens by itself in every **new** session. A session started before the 
 | Piece | Role |
 | --- | --- |
 | `hooks/register.tsx` | The hooks module: opens the pane, records files from tool calls, scans after Bash commands, draws the list and opens Explorer on click |
+| `hooks/register.test.ts` | Tests for the pane: a written file is listed, an empty pane says so, a denied write is not listed |
 | `types/index.d.ts` | State contract |
 
 ### Privacy and safety
@@ -98,6 +99,17 @@ The pane opens by itself in every **new** session. A session started before the 
 - **Everything stays on your machine.** The mod reads file names and modified times in local folders. It makes no network requests and sends nothing anywhere.
 - It never reads file contents and never changes or deletes files.
 - The only thing it launches is `explorer.exe /select,<path>` for a file you click.
+
+## Develop
+
+Run both from the folder that holds the clone (here `~/.claude/mods/file-links`):
+
+```bash
+claude plugin validate ~/.claude/mods/file-links
+claude plugin test ~/.claude/mods/file-links
+```
+
+`validate` checks the manifest, the hooks module and the state contract. `test` runs `hooks/register.test.ts` against the engine and covers the pane, not the Bash scan or the Explorer click.
 
 ## License
 
