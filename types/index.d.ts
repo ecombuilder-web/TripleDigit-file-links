@@ -3,4 +3,5 @@ declare module 'claude-code' {
     'file-links': { files: string[] }
   }
 }
-export {}
+
+export type FileLinksFiles = string[]

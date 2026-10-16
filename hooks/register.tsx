@@ -25,19 +25,19 @@ const candidates = (command: string) => {
   return [...out]
 }
 
+const absolute = async ($: any, path: string) => {
+  if (/^([a-zA-Z]:|\/|\\)/.test(path)) return path
+  const stat = await $.fs.stat(path, { resolve: true }).catch(() => undefined)
+  return stat?.realPath ?? path
+}
+
+const track = async ($: any, path: string | undefined) => {
+  if (!path) return
+  const full = toWindows(path)
+  await update($, files, list => [full, ...list.filter(one => one !== full)].slice(0, 200))
+}
+
 export const register: Register = on => {
-  const absolute = async ($: any, path: string) => {
-    if (/^([a-zA-Z]:|\/|\\)/.test(path)) return path
-    const stat = await $.fs.stat(path, { resolve: true }).catch(() => undefined)
-    return stat?.realPath ?? path
-  }
-
-  const track = async ($: any, path: string | undefined) => {
-    if (!path) return
-    const full = toWindows(path)
-    await update($, files, list => [full, ...list.filter(one => one !== full)].slice(0, 200))
-  }
-
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'file-links', description: 'Show files made this session, with links to File Explorer' })
     void $.ui.open({ id: PANE, title: 'Files' })
@@ -53,13 +53,13 @@ export const register: Register = on => {
     const ran = await next(e)
     if (ran.deny === undefined && ran.isError !== true) await track($, e.file_path)
     return ran
-  })
+  }).catch(($, e, next) => next(e))
 
   on('tool.call', { tool: 'Edit' }, async ($, e, next) => {
     const ran = await next(e)
     if (ran.deny === undefined && ran.isError !== true) await track($, e.file_path)
     return ran
-  })
+  }).catch(($, e, next) => next(e))
 
   on('tool.call', { tool: 'Bash' }, async ($, e, next) => {
     const t0 = (await $.clock.now()) - 1000
@@ -95,13 +95,13 @@ export const register: Register = on => {
     }
     for (const path of [...found].slice(0, 30)) await track($, await absolute($, path))
     return ran
-  })
+  }).catch(($, e, next) => next(e))
 
   on('tool.call', { tool: 'NotebookEdit' }, async ($, e, next) => {
     const ran = await next(e)
     if (ran.deny === undefined && ran.isError !== true) await track($, (e as any).notebook_path)
     return ran
-  })
+  }).catch(($, e, next) => next(e))
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const { Box, Text, Button } = $.ui.resolve(e)
